@@ -76,8 +76,15 @@ app.use("/api/posts", require("./routes/posts")); // Đảm bảo đường dẫ
 // Mount route auth
 app.use("/api/auth", require("./routes/auth"));
 
-// Cấu hình UI Swagger
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Cấu hình UI Swagger (dùng CDN để hoạt động trên Vercel)
+const swaggerUiOptions = {
+  customCssUrl: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui.min.css",
+  customJs: [
+    "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui-bundle.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.18.2/swagger-ui-standalone-preset.js",
+  ],
+};
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerUiOptions));
 
 // --------------------------
 // 5. Khởi động server
